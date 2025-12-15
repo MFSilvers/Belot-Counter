@@ -388,7 +388,7 @@ function renderRounds() {
                         <button class="btn btn-success btn-small" onclick="saveRoundEdit(${index})">Salva</button>
                         <button class="btn btn-secondary btn-small" onclick="cancelRoundEdit()">Annulla</button>
                     ` : `
-                        <button class="btn btn-primary btn-small" onclick="editRound(${index})">Modifica</button>
+                        <button class="btn btn-primary btn-small" onclick="editRound(${index})">✏️</button>
                         <button class="btn btn-danger btn-small" onclick="deleteRound(${index})">X</button>
                     `}
                 </td>
@@ -432,7 +432,7 @@ function renderRounds() {
                         </div>
                     ` : `
                         <div class="action-buttons">
-                            <button class="btn btn-primary btn-small" onclick="editRound(${index})">Modifica</button>
+                            <button class="btn btn-primary btn-small" onclick="editRound(${index})">✏️</button>
                             <button class="btn btn-danger btn-small" onclick="deleteRound(${index})">X</button>
                         </div>
                     `}
@@ -701,17 +701,55 @@ function goBackToMain() {
 }
 
 function resetGame() {
+    // Reset all game data
     teamCount = 2;
     teamNames = [];
     boltCounts = [0, 0, 0];
     rounds = [];
     currentRoundIndex = 0;
+    editingRoundIndex = null;
     
+    // Clear all input fields
     document.getElementById('team1Name').value = '';
     document.getElementById('team2Name').value = '';
     document.getElementById('team3Name').value = '';
     document.getElementById('team3InputGroup').style.display = 'none';
     
+    // Hide winner message banner
+    const winnerMessage = document.getElementById('winnerMessage');
+    if (winnerMessage) {
+        winnerMessage.style.display = 'none';
+    }
+    
+    // Clear score table
+    const tbody = document.getElementById('scoreTableBody');
+    if (tbody) {
+        tbody.innerHTML = '';
+    }
+    
+    // Clear score inputs in game screen
+    const scoreInputs = document.getElementById('scoreInputs');
+    if (scoreInputs) {
+        scoreInputs.innerHTML = '';
+    }
+    
+    // Reset totals and remove winner class
+    for (let i = 0; i < 3; i++) {
+        const totalElement = document.getElementById(`totalScore${i + 1}`);
+        if (totalElement) {
+            totalElement.textContent = '0';
+        }
+        const boltElement = document.getElementById(`boltCount${i + 1}`);
+        if (boltElement) {
+            boltElement.textContent = '🔩: 0';
+        }
+        const totalBox = document.getElementById(`total${i + 1}`);
+        if (totalBox) {
+            totalBox.classList.remove('winner');
+        }
+    }
+    
+    // Go back to main screen
     showScreen('teamSelection');
     showToast('Nuova partita iniziata', 'success');
 }
