@@ -663,6 +663,7 @@ function checkGameEnd() {
 
 function goBackToTeamSelection() {
     showScreen('teamSelection');
+    resetGame();
 }
 
 function goBackToMain() {
@@ -695,6 +696,7 @@ function goBackToMain() {
     document.getElementById('team2Name').value = '';
     document.getElementById('team3Name').value = '';
     document.getElementById('team3InputGroup').style.display = 'none';
+    resetGame();
     
     showScreen('teamSelection');
     showToast('Tornato alla pagina principale', 'info');
@@ -751,7 +753,7 @@ function resetGame() {
     
     // Go back to main screen
     showScreen('teamSelection');
-    showToast('Nuova partita iniziata', 'success');
+    
 }
 
 function showScreen(screenId) {
