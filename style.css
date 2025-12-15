@@ -1,0 +1,986 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: #1a1a1a;
+    min-height: 100vh;
+    padding: 20px;
+    color: #ffffff;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.screen {
+    display: none;
+    background: #2a2a2a;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.3s ease-in;
+    border: 1px solid #3a3a3a;
+}
+
+.screen.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+h1 {
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 30px;
+    font-size: 2rem;
+}
+
+h2 {
+    color: #ffffff;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.selection-box,
+.name-input-box {
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.button-group {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin: 30px 0;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    min-height: 50px;
+    touch-action: manipulation;
+}
+
+.btn-primary {
+    background: #ffffff;
+    color: #1a1a1a;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+    background: #f0f0f0;
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-success {
+    background: #ffffff;
+    color: #1a1a1a;
+}
+
+.btn-success:hover {
+    background: #f0f0f0;
+    transform: translateY(-2px);
+}
+
+.btn-danger {
+    background: #ef4444;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #dc2626;
+}
+
+.btn-small {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    min-height: 36px;
+    border-radius: 25px;
+}
+
+.info {
+    color: #aaaaaa;
+    font-size: 0.95rem;
+    margin-top: 20px;
+    line-height: 1.6;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.input-group input,
+.input-group select {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 1rem;
+    border: 2px solid #3a3a3a;
+    border-radius: 25px;
+    transition: border-color 0.3s;
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+.input-group select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    padding-right: 40px;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+    outline: none;
+    border-color: #ffffff;
+}
+
+.input-group input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.input-group input[type="number"]::-webkit-outer-spin-button,
+.input-group input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.game-header {
+    margin-bottom: 30px;
+}
+
+.header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 15px;
+}
+
+.header-top h1 {
+    margin: 0;
+    flex: 1;
+    text-align: center;
+}
+
+.btn-secondary {
+    background: #3a3a3a;
+    color: white;
+    border-radius: 25px;
+}
+
+.btn-secondary:hover {
+    background: #4a4a4a;
+}
+
+.totals {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.total-box {
+    background: #1a1a1a;
+    color: white;
+    padding: 20px 30px;
+    border-radius: 25px;
+    text-align: center;
+    min-width: 150px;
+    flex: 1;
+    max-width: 300px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s;
+    border: 2px solid #3a3a3a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.total-box.winner {
+    background: #1a1a1a;
+    border-color: #f59e0b;
+    animation: pulse 1s infinite;
+    transform: scale(1.05);
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1.05);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+.team-name {
+    display: block;
+    font-size: 0.9rem;
+    opacity: 0.9;
+    margin: 0;
+}
+
+.total-score {
+    display: block;
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.bolt-count {
+    display: block;
+    font-size: 0.9rem;
+    opacity: 0.9;
+    margin: 0;
+}
+
+.btn-penalty {
+    margin-top: 0;
+    background: #ef4444;
+    color: white;
+    width: 100%;
+    border-radius: 25px;
+    white-space: nowrap;
+}
+
+.btn-penalty:hover {
+    background: #dc2626;
+}
+
+.game-content {
+    display: grid;
+    gap: 30px;
+    width: 100%;
+}
+
+.round-input-section {
+    background: #1a1a1a;
+    padding: 25px;
+    border-radius: 25px;
+    border: 2px solid #3a3a3a;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+.round-input-box {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.score-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.quick-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    justify-content: center;
+}
+
+.score-table-section {
+    background: #1a1a1a;
+    padding: 25px;
+    border-radius: 25px;
+    border: 2px solid #3a3a3a;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+.table-container {
+    overflow-x: hidden;
+    overflow-y: visible;
+    width: 100%;
+    max-width: 100%;
+    padding-bottom: 20px;
+    box-sizing: border-box;
+}
+
+table {
+    width: 100%;
+    max-width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    background: #2a2a2a;
+    border-radius: 25px;
+    overflow: hidden;
+    table-layout: fixed;
+    box-sizing: border-box;
+}
+
+table td {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.actions-cell {
+    white-space: normal;
+    min-width: 0;
+    width: auto;
+    overflow: hidden;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 5px;
+    flex-wrap: nowrap;
+    justify-content: center;
+    width: 100%;
+}
+
+.action-buttons .btn {
+    flex: 1;
+    min-width: 0;
+    max-width: 100%;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+thead {
+    background: #1a1a1a;
+    color: white;
+}
+
+th {
+    padding: 15px 20px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+th:first-child {
+    width: 15%;
+    min-width: 0;
+}
+
+th:last-child {
+    width: 20%;
+    min-width: 0;
+}
+
+th:not(:first-child):not(:last-child) {
+    width: auto;
+    min-width: 0;
+}
+
+td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #3a3a3a;
+    vertical-align: middle;
+    overflow: hidden;
+    position: relative;
+}
+
+td:has(.score-edit) {
+    padding: 8px 10px;
+    width: auto;
+    min-width: 0;
+}
+
+td:has(.score-edit) .score-edit {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+td:last-child {
+    white-space: normal;
+    overflow: hidden;
+    min-width: 0;
+    width: auto;
+}
+
+td:last-child .btn {
+    margin: 2px;
+    white-space: nowrap;
+}
+
+tbody tr:hover {
+    background: #2a2a2a;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.score-edit {
+    width: 100%;
+    padding: 12px 8px;
+    border: 3px solid #5a5a5a;
+    border-radius: 15px;
+    font-size: 1.4rem;
+    font-weight: 800;
+    text-align: center;
+    background: #0a0a0a !important;
+    color: #ffffff !important;
+    min-height: 55px;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+    appearance: none;
+    position: relative;
+    z-index: 10;
+    -webkit-text-fill-color: #ffffff !important;
+    display: block;
+    line-height: 1.3;
+    overflow: visible;
+    margin: 0 auto;
+    text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+.score-edit[readonly] {
+    background: #0f0f0f !important;
+    cursor: default;
+    border-color: #5a5a5a;
+    color: #ffffff !important;
+    opacity: 1 !important;
+    -webkit-text-fill-color: #ffffff !important;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.score-edit::-webkit-input-placeholder {
+    color: #888888 !important;
+    -webkit-text-fill-color: #888888 !important;
+    opacity: 1;
+}
+
+.score-edit::-moz-placeholder {
+    color: #888888 !important;
+    opacity: 1;
+}
+
+.score-edit:-ms-input-placeholder {
+    color: #888888 !important;
+    opacity: 1;
+}
+
+.score-edit::-webkit-inner-spin-button,
+.score-edit::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+.score-edit::placeholder {
+    color: #888888;
+    opacity: 1;
+}
+
+.score-edit:focus {
+    outline: none;
+    border-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+.quick-buttons-table {
+    display: flex;
+    gap: 5px;
+    margin-top: 5px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.quick-buttons-table .btn-small {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    min-height: 28px;
+}
+
+.player-info {
+    display: inline;
+    font-size: 0.7rem;
+    color: #ffffff;
+    margin-left: 5px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.bolt-info {
+    display: inline;
+    font-size: 0.7rem;
+    color: #f59e0b;
+    margin-left: 5px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.winner-message {
+    text-align: center;
+    padding: 40px 20px;
+    background: #1a1a1a;
+    color: white;
+    border-radius: 25px;
+    margin-top: 30px;
+    animation: fadeIn 0.5s ease-in;
+    border: 2px solid #f59e0b;
+}
+
+.winner-message h2 {
+    color: white;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    #toastContainer {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+    }
+
+    .toast {
+        min-width: auto;
+        max-width: 100%;
+    }
+
+    .screen {
+        padding: 20px;
+        border-radius: 15px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    .button-group {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 18px 30px;
+        font-size: 1rem;
+    }
+
+    .totals {
+        flex-direction: column;
+    }
+
+    .total-box {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .game-content {
+        gap: 15px;
+        grid-template-columns: 1fr;
+    }
+
+    .round-input-section,
+    .score-table-section {
+        padding: 12px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .table-container {
+        overflow-x: hidden;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    table {
+        font-size: 0.7rem;
+        width: 100%;
+        max-width: 100%;
+        table-layout: fixed;
+        box-sizing: border-box;
+    }
+
+    th {
+        padding: 6px 3px;
+        font-size: 0.65rem;
+    }
+
+    th:first-child {
+        width: auto;
+        min-width: 0;
+    }
+
+    th:not(:first-child):not(:last-child) {
+        width: auto;
+        min-width: 0;
+    }
+
+    th:last-child {
+        width: auto;
+        min-width: 0;
+    }
+
+    td {
+        padding: 4px 2px;
+        font-size: 0.7rem;
+    }
+    
+    td:has(.score-edit) {
+        padding: 3px 1px;
+    }
+
+    .score-edit {
+        font-size: 1rem;
+        padding: 8px 3px;
+        min-height: 40px;
+        font-weight: 800;
+        text-shadow: 0 0 3px rgba(255, 255, 255, 0.4);
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    td:has(.score-edit) {
+        padding: 4px 2px;
+    }
+
+    td:has(.score-edit) .score-edit {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .actions-cell {
+        min-width: 0;
+        width: auto;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        gap: 3px;
+        width: 100%;
+    }
+
+    .action-buttons .btn {
+        width: 100%;
+        font-size: 0.65rem;
+        padding: 5px 6px;
+        min-height: 28px;
+    }
+
+    td:last-child {
+        min-width: 0;
+        width: auto;
+    }
+
+    .quick-buttons {
+        flex-wrap: wrap;
+    }
+
+    .btn-small {
+        flex: 1;
+        min-width: 80px;
+    }
+
+    .winner-message h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.3rem;
+    }
+
+    .input-group input {
+        font-size: 16px;
+    }
+
+    table {
+        font-size: 0.65rem;
+        width: 100%;
+        max-width: 100%;
+        table-layout: fixed;
+        box-sizing: border-box;
+    }
+
+    th {
+        padding: 5px 2px;
+        font-size: 0.6rem;
+    }
+
+    th:first-child {
+        width: auto;
+        min-width: 0;
+    }
+
+    th:not(:first-child):not(:last-child) {
+        width: auto;
+        min-width: 0;
+    }
+
+    th:last-child {
+        width: auto;
+        min-width: 0;
+    }
+
+    td {
+        padding: 3px 1px;
+        font-size: 0.65rem;
+    }
+    
+    td:has(.score-edit) {
+        padding: 2px 1px;
+    }
+
+    .score-edit {
+        font-size: 0.95rem;
+        padding: 6px 2px;
+        min-height: 38px;
+        font-weight: 800;
+        text-shadow: 0 0 3px rgba(255, 255, 255, 0.4);
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    td:has(.score-edit) {
+        padding: 3px 1px;
+    }
+
+    td:has(.score-edit) .score-edit {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .actions-cell {
+        min-width: 0;
+        width: auto;
+    }
+
+    .action-buttons .btn {
+        font-size: 0.6rem;
+        padding: 4px 5px;
+        min-height: 26px;
+    }
+
+    td:last-child {
+        min-width: 0;
+        width: auto;
+    }
+
+    .player-info,
+    .bolt-info {
+        font-size: 0.6rem;
+    }
+}
+
+@media (min-width: 769px) {
+    .game-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+    }
+
+    .round-input-section {
+        order: 1;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        min-width: 0;
+    }
+
+    .score-table-section {
+        order: 2;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        min-width: 0;
+    }
+    
+    table {
+        font-size: 0.75rem;
+        width: 100%;
+        max-width: 100%;
+        table-layout: fixed;
+        box-sizing: border-box;
+    }
+
+    th {
+        padding: 8px 4px;
+        font-size: 0.7rem;
+    }
+
+    th:first-child {
+        width: auto;
+        min-width: 0;
+    }
+
+    th:not(:first-child):not(:last-child) {
+        width: auto;
+        min-width: 0;
+    }
+
+    th:last-child {
+        width: auto;
+        min-width: 0;
+    }
+
+    td {
+        padding: 6px 3px;
+        font-size: 0.75rem;
+    }
+
+    .score-edit {
+        font-size: 1.2rem;
+        padding: 10px 4px;
+        min-height: 45px;
+        font-weight: 800;
+        text-shadow: 0 0 3px rgba(255, 255, 255, 0.4);
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    td:has(.score-edit) {
+        padding: 4px 2px;
+    }
+
+    td:has(.score-edit) .score-edit {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .actions-cell {
+        min-width: 0;
+        width: auto;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        gap: 4px;
+        width: 100%;
+    }
+
+    .action-buttons .btn {
+        width: 100%;
+        font-size: 0.7rem;
+        padding: 6px 8px;
+        min-height: 32px;
+    }
+
+    td:last-child {
+        min-width: 0;
+        width: auto;
+    }
+}
+
+#toastContainer {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.toast {
+    background: #2a2a2a;
+    color: #ffffff;
+    padding: 15px 20px;
+    border-radius: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    border: 1px solid #3a3a3a;
+    min-width: 300px;
+    max-width: 400px;
+    animation: slideIn 0.3s ease-out;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.toast.error {
+    border-color: #ef4444;
+}
+
+.toast.success {
+    border-color: #10b981;
+}
+
+.toast.warning {
+    border-color: #f59e0b;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+}
+
+.toast.slide-out {
+    animation: slideOut 0.3s ease-out forwards;
+}
+
