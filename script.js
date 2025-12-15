@@ -242,9 +242,10 @@ function addRound() {
         }
         
         const otherTeamIndex = 1 - playerIndex;
-        const halfValue = gameValue / 2;
+        const playerScore = gameValue - otherScore;
         
-        if (otherScore > halfValue) {
+        // Bolt se il giocatore non fa almeno pareggio (deve essere >= otherScore)
+        if (playerScore < otherScore) {
             boltAssigned = true;
             boltCounts[playerIndex]++;
             if (boltCounts[playerIndex] >= 3) {
@@ -254,7 +255,7 @@ function addRound() {
             scores[playerIndex] = 0;
             scores[otherTeamIndex] = gameValue;
         } else {
-            scores[playerIndex] = gameValue - otherScore;
+            scores[playerIndex] = playerScore;
             scores[otherTeamIndex] = otherScore;
         }
         
@@ -278,9 +279,8 @@ function addRound() {
             return;
         }
         
-        const maxOtherScore = Math.max(otherScore1, otherScore2);
-        
-        if (playerScore < maxOtherScore) {
+        // Bolt se il giocatore non fa almeno pareggio con ENTRAMBI gli altri (deve essere >= a entrambi separatamente)
+        if (playerScore < otherScore1 || playerScore < otherScore2) {
             boltAssigned = true;
             boltCounts[playerIndex]++;
             if (boltCounts[playerIndex] >= 3) {
@@ -290,15 +290,17 @@ function addRound() {
             
             scores[playerIndex] = 0;
             
+            // Gli altri mantengono i loro punteggi, i punti del giocatore con bolt vanno a chi ha fatto di più
             if (otherScore1 > otherScore2) {
-                scores[otherIndices[0]] = gameValue;
-                scores[otherIndices[1]] = 0;
+                scores[otherIndices[0]] = otherScore1 + playerScore;
+                scores[otherIndices[1]] = otherScore2;
             } else if (otherScore2 > otherScore1) {
-                scores[otherIndices[0]] = 0;
-                scores[otherIndices[1]] = gameValue;
+                scores[otherIndices[0]] = otherScore1;
+                scores[otherIndices[1]] = otherScore2 + playerScore;
             } else {
-                scores[otherIndices[0]] = Math.floor(gameValue / 2);
-                scores[otherIndices[1]] = Math.ceil(gameValue / 2);
+                // Se pari, dividi i punti del giocatore con bolt
+                scores[otherIndices[0]] = otherScore1 + Math.floor(playerScore / 2);
+                scores[otherIndices[1]] = otherScore2 + Math.ceil(playerScore / 2);
             }
         } else {
             scores[playerIndex] = playerScore;
@@ -394,7 +396,7 @@ function renderRounds() {
         } else {
             const playerInfo = round.playerIndex !== undefined ? 
                 `<span class="player-info">${teamNames[round.playerIndex]}</span>` : '';
-            const boltInfo = round.boltAssigned ? '<span class="bolt-info">🔩 Bolt assegnato</span>' : '';
+            const boltInfo = round.boltAssigned ? '<span class="bolt-info">🔩 Bolt</span>' : '';
             const isEditing = editingRoundIndex === index;
             
             const score0 = round.scores[0] !== undefined && round.scores[0] !== null ? round.scores[0] : 0;
@@ -500,10 +502,11 @@ function saveRoundEdit(roundIndex) {
         round.scores = newScores;
         round.gameValue = newGameValue;
         
-        const halfValue = newGameValue / 2;
+        const playerScore = newScores[round.playerIndex];
         const otherScore = newScores[1 - round.playerIndex];
         
-        if (otherScore > halfValue && !round.boltAssigned) {
+        // Bolt se il giocatore non fa almeno pareggio (deve essere >= otherScore)
+        if (playerScore < otherScore && !round.boltAssigned) {
             round.boltAssigned = true;
             boltCounts[round.playerIndex]++;
             if (boltCounts[round.playerIndex] >= 3) {
@@ -512,7 +515,7 @@ function saveRoundEdit(roundIndex) {
             }
             round.scores[round.playerIndex] = 0;
             round.scores[1 - round.playerIndex] = newGameValue;
-        } else if (otherScore <= halfValue && round.boltAssigned) {
+        } else if (playerScore >= otherScore && round.boltAssigned) {
             round.boltAssigned = false;
             if (boltCounts[round.playerIndex] > 0) {
                 boltCounts[round.playerIndex]--;
@@ -521,9 +524,11 @@ function saveRoundEdit(roundIndex) {
     } else {
         const playerScore = newScores[round.playerIndex];
         const otherIndices = [0, 1, 2].filter(i => i !== round.playerIndex);
-        const maxOtherScore = Math.max(newScores[otherIndices[0]], newScores[otherIndices[1]]);
+        const otherScore1 = newScores[otherIndices[0]];
+        const otherScore2 = newScores[otherIndices[1]];
         
-        if (playerScore < maxOtherScore && !round.boltAssigned) {
+        // Bolt se il giocatore non fa almeno pareggio con ENTRAMBI gli altri (deve essere >= a entrambi separatamente)
+        if ((playerScore < otherScore1 || playerScore < otherScore2) && !round.boltAssigned) {
             round.boltAssigned = true;
             boltCounts[round.playerIndex]++;
             if (boltCounts[round.playerIndex] >= 3) {
@@ -532,17 +537,19 @@ function saveRoundEdit(roundIndex) {
             }
             round.scores[round.playerIndex] = 0;
             
-            if (newScores[otherIndices[0]] > newScores[otherIndices[1]]) {
-                round.scores[otherIndices[0]] = newGameValue;
-                round.scores[otherIndices[1]] = 0;
-            } else if (newScores[otherIndices[1]] > newScores[otherIndices[0]]) {
-                round.scores[otherIndices[0]] = 0;
-                round.scores[otherIndices[1]] = newGameValue;
+            // Gli altri mantengono i loro punteggi, i punti del giocatore con bolt vanno a chi ha fatto di più
+            if (otherScore1 > otherScore2) {
+                round.scores[otherIndices[0]] = otherScore1 + playerScore;
+                round.scores[otherIndices[1]] = otherScore2;
+            } else if (otherScore2 > otherScore1) {
+                round.scores[otherIndices[0]] = otherScore1;
+                round.scores[otherIndices[1]] = otherScore2 + playerScore;
             } else {
-                round.scores[otherIndices[0]] = Math.floor(newGameValue / 2);
-                round.scores[otherIndices[1]] = Math.ceil(newGameValue / 2);
+                // Se pari, dividi i punti del giocatore con bolt
+                round.scores[otherIndices[0]] = otherScore1 + Math.floor(playerScore / 2);
+                round.scores[otherIndices[1]] = otherScore2 + Math.ceil(playerScore / 2);
             }
-        } else if (playerScore >= maxOtherScore && round.boltAssigned) {
+        } else if (playerScore >= otherScore1 && playerScore >= otherScore2 && round.boltAssigned) {
             round.boltAssigned = false;
             if (boltCounts[round.playerIndex] > 0) {
                 boltCounts[round.playerIndex]--;
