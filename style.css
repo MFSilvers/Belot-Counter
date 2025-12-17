@@ -15,6 +15,9 @@ body {
 .container {
     max-width: 1200px;
     margin: 0 auto;
+    overflow-x: hidden;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .screen {
@@ -579,6 +582,7 @@ tbody tr:last-child td {
 @media (max-width: 768px) {
     body {
         padding: 10px;
+        overflow-x: hidden;
     }
 
     #toastContainer {
@@ -595,6 +599,26 @@ tbody tr:last-child td {
     .screen {
         padding: 20px;
         border-radius: 15px;
+        overflow-x: hidden;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .header-top {
+        gap: 8px;
+        margin-bottom: 15px;
+    }
+
+    .header-top .btn-secondary {
+        min-width: 35px;
+        padding: 8px 12px;
+        font-size: 1rem;
+        min-height: 35px;
+    }
+
+    .header-top h1 {
+        font-size: 1.2rem;
+        margin: 0;
     }
 
     h1 {
@@ -740,6 +764,21 @@ tbody tr:last-child td {
 }
 
 @media (max-width: 480px) {
+    .header-top {
+        gap: 6px;
+    }
+
+    .header-top .btn-secondary {
+        min-width: 30px;
+        padding: 6px 10px;
+        font-size: 0.9rem;
+        min-height: 30px;
+    }
+
+    .header-top h1 {
+        font-size: 1rem;
+    }
+
     h1 {
         font-size: 1.3rem;
     }
